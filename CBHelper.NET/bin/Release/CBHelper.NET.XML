@@ -1,0 +1,660 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CBHelper.NET</name>
+    </assembly>
+    <members>
+        <member name="T:Cloudbase.DataCommands.CBDataAggregationCommandProject">
+            The project aggregation command filters the number of fields selected
+            from a document.
+            You can either populate the <strong>includeFields</strong> property
+            to exclude all fields and only include the ones selected or use
+            the <strong>excludeFields</strong> to set up an exclusion list.
+        </member>
+        <member name="T:Cloudbase.DataCommands.CBDataAggregationCommand">
+             This abstract class should be implemented by any class to send 
+             Data Aggregation commands to cloudbase.io
+            
+             The serializeAggregateConditions should resturn a Map
+             exactly in the format needed by the CBHelper class to be added
+             to the list of parmeters, serliazed and sent to cloudbase.io
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBDataAggregationCommand.SerializeAggregateConditions">
+             Serializes the Command object to its JSON representation
+            
+             @return An Object representation of the Command object. This
+              method should be implemented in each subclass
+        </member>
+        <member name="T:Cloudbase.CBPayPalBill">
+             <summary>
+             This is the bill object for the PayPal digital goods payments APIs. A bill object must contain
+             at least one BillItem.
+            
+             The description of the bill should also contain the total amount as PayPal does not always display
+             the amount in the checkout page.
+             </summary>
+        </member>
+        <member name="M:Cloudbase.CBPayPalBill.AddNewItem(Cloudbase.CBPayPalBillItem)">
+            <summary>
+            Add a new CBPayPalBillItem to the current bill
+            </summary>
+            <param name="newItem">The item to be added</param>
+        </member>
+        <member name="M:Cloudbase.CBPayPalBill.serializePurchase">
+            <summary>
+            This method is used internally to generate the NSMutableDictionary to be serialised
+            for the calls to the cloudbase.io APIs
+            </summary>
+            <returns>The Dictionary representation of the Bill object</returns>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBill.Name">
+            <summary>
+            a name for the purchase
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBill.Description">
+            <summary>
+             a description of the bill item.
+            this should also contain the price for the bill as PayPal will not always display the amount field.
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBill.InvoiceNumber">
+            <summary>
+            this is a user generated unique identifier for the transaction.
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBill.Currency">
+            <summary>
+            The 3 letter ISO code for the transaction currency. If not specified this will automatically
+            be USD
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBill.PaymentCompletedFunction">
+            <summary>
+            This is the code of a CloudFunction to be executed once the payment is completed
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBill.PaymentCancelledFunction">
+            <summary>
+            This is the name of a CloudFunction to be executed if the payment is cancelled
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBill.PaymentCompletedUrl">
+            <summary>
+            By default the express checkout process will return to the cloudbase APIs. if you want to override 
+            this behaviour and return to a page you own once the payment is completed set this property to the url
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBill.PaymentCancelledUrl">
+            <summary>
+            By default the express checkout process will return to the cloudbase APIs. if you want to override
+            this behaviour and return to a page you own once the payment has been cancelled set this property to the url
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBill.Items">
+            <summary>
+            this is a list of BillItems. Each CBPayPalBill must have at least one BillItem
+            </summary>
+        </member>
+        <member name="T:Cloudbase.CBPayPalBillItem">
+            <summary>
+             this object represents a single item within a CBPayPalBill object.
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBillItem.Name">
+            <summary>
+             The name of the item for the transaction
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBillItem.Description">
+            <summary>
+            An extended description of the item. This should also contain the amount as
+            PayPal does not always display it.
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBillItem.Amount">
+            <summary>
+            The amount of the transaction
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBillItem.Tax">
+            <summary>
+            additional taxes to be added to the amount
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBPayPalBillItem.Quantity">
+            <summary>
+            a quantity representing the number of items involved in the transaction.
+            for example 100 poker chips
+            </summary>
+        </member>
+        <member name="T:Cloudbase.CBLogLevel">
+            <summary>
+            The possible log levels for the log APIs
+            </summary>
+        </member>
+        <member name="T:Cloudbase.CBNotificationType">
+            <summary>
+            The supported notification types for the WNS service
+            </summary>
+        </member>
+        <member name="T:Cloudbase.CBHelperAttachment">
+            <summary>
+            This container class is used to send attachment to the data APIs. when inserting or updating a document with attached files
+            then a List of CBHelperAttachment objects should be sent.
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBHelperAttachment.FileData">
+            <summary>
+            The byte[] representing the content of the file
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBHelperAttachment.FileName">
+            <summary>
+            The name of the original file
+            </summary>
+        </member>
+        <member name="T:Cloudbase.CBResponseInfo">
+            <summary>
+            The response information object the helper class will send to the delegate methods once
+            a request is completed
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBResponseInfo.CBFunction">
+            <summary>
+            The name of the API functionality being used
+            This could be
+                - Log
+                - Data
+                - Notifications
+                - Cloudfunction
+                - Applet
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBResponseInfo.Status">
+            <summary>
+            Whether the call was successful or an error was thrown
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBResponseInfo.Data">
+            <summary>
+            A nested collection of Dictionary&lt;string, object&gt;
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBResponseInfo.HttpStatus">
+            <summary>
+            The http status code the request completed with
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBResponseInfo.ErrorMessage">
+            <summary>
+            The error message returned by the cloudbase.io APIs, if any.
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBResponseInfo.OutputString">
+            <summary>
+            The full JSON output returned by the cloudbase.io APIs
+            </summary>
+        </member>
+        <member name="T:Cloudbase.CBHelper">
+            <summary>
+            This is the main cloudbase.io helper class. All API calls are accessible from this class.
+            </summary>
+        </member>
+        <member name="M:Cloudbase.CBHelper.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new instance of the CBHelper class. Right after the new object has been created you should call the SetPassword method to 
+            complete the initialisation.
+            </summary>
+            <param name="appCode">The application code on cloudbase.io</param>
+            <param name="appUniq">The unique code for the application generated by cloudbase.io when the application is
+            created</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.SetPassword(System.String)">
+            <summary>
+            Sets the application password for cloudbase.io. This is the second step of the helper class initialization and it is required
+            for the object to work correctly. The moment the password is set the device is registered with cloudbase.io and can start calling
+            the APIs and generating data for the analytics.
+            </summary>
+            <param name="apppwd">The MD5 hash of the cloudbase.io password. The CBHelper namespace contains an MD5 class which can be used
+            to generate this: CBHelper.MD5Core.GetHashString("application password");</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogDebug(System.String)">
+            <summary>
+            Sends a debug log message to the cloudbase.io log. This will be accessible from the "log" page of your account
+            </summary>
+            <param name="log">The line to be logged</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogDebug(System.String,System.String)">
+            <summary>
+            Sends a debug log message to the cloudbase.io log. This will be accessible from the "log" page of your account.
+            </summary>
+            <param name="log">The line to be logged</param>
+            <param name="category">The category for the log entry</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogInfo(System.String)">
+            <summary>
+            Sends an info log message to the cloudbase.io log. This will be accessible from the "log" page of your account
+            </summary>
+            <param name="log">The line to be logged</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogInfo(System.String,System.String)">
+            <summary>
+            Sends an info log message to the cloudbase.io log. This will be accessible from the "log" page of your account
+            </summary>
+            <param name="log">The line to be logged</param>
+            <param name="category">The category for the log entry</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogWarning(System.String)">
+            <summary>
+            Sends a warning log message to the cloudbase.io log. This will be accessible from the "log" page of your account
+            </summary>
+            <param name="log">The line to be logged</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogWarning(System.String,System.String)">
+            <summary>
+            Sends a warning log message to the cloudbase.io log. This will be accessible from the "log" page of your account
+            </summary>
+            <param name="log">The line to be logged</param>
+            <param name="category">The category for the log entry</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogError(System.String)">
+            <summary>
+            Sends an error log message to the cloudbase.io log. This will be accessible from the "log" page of your account
+            </summary>
+            <param name="log">The line to be logged</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogError(System.String,System.String)">
+            <summary>
+            Sends an error log message to the cloudbase.io log. This will be accessible from the "log" page of your account
+            </summary>
+            <param name="log">The line to be logged</param>
+            <param name="category">The category for the log entry</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogFatal(System.String)">
+            <summary>
+            Sends a fatal log message to the cloudbase.io log. This will be accessible from the "log" page of your account
+            </summary>
+            <param name="log">The line to be logged</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogFatal(System.String,System.String)">
+            <summary>
+            Sends a fatal log message to the cloudbase.io log. This will be accessible from the "log" page of your account
+            </summary>
+            <param name="log">The line to be logged</param>
+            <param name="category">The category for the log entry</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.LogEvent(System.String,System.String)">
+            <summary>
+            Sends an event log message to the cloudbase.io log. These messages are used to generate custom event analytics.
+            </summary>
+            <param name="log">The line to be logged</param>
+            /// <param name="category">The category for the log entry</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.InsertDocument(System.String,System.Object,System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Inserts the given object in a cloudbase collection. If the collection does not exist it is automatically created.
+            Similarly if the data structure of the given object is different from documents already present in the collection
+            the structure is automatically altered to accommodate the new object.
+            The system will automatically try to serialise any object sent to this function. However, we recommend you use
+            the simplest possible objects to hold data if not a Dictionary or a List directly. 
+            Once the call to the APIs is completed the requestCompleted method is triggered in the delegate.
+            </summary>
+            <param name="collection">The name of the collection to save the object into</param>
+            <param name="document">The object to be serialized.</param>
+            <param name="whenDone">The delegate to be called with the response once the request is completed</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.InsertDocument(System.String,System.Object,System.Collections.Generic.IEnumerable{Cloudbase.CBHelperAttachment},System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Inserts the given object in a cloudbase collection. If the collection does not exist it is automatically created.
+            Similarly if the data structure of the given object is different from documents already present in the collection
+            the structure is automatically altered to accommodate the new object.
+            The system will automatically try to serialise any object sent to this function. However, we recommend you use
+            the simplest possible objects to hold data if not a Dictionary or a List directly.
+            The attachments will be stored in the cloudbase file system and an additional "cb_files" field will be created in your document.
+            This contains a list of all the files attached to the document which you will be able to retrieve using the DownloadFile
+            method with the ID from the cb_file field.
+            Once the call to the APIs is completed the requestCompleted method is triggered in the delegate.
+            </summary>
+            <param name="collection">The name of the collection to save the object into</param>
+            <param name="document">The object to be serialized</param>
+            <param name="fileAttachments">A list of attachments for the document</param>
+            <param name="whenDone">The delegate to be called with the response once the request is completed</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.SearchDocument(System.String,Cloudbase.DataCommands.CBHelperSearchCondition,System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Runs a search over a collection with the given criteria. The documents matching the search criteria are then
+            returned in the CBResponseInfo object passed to the requestCompleted method of the delegate.
+            </summary>
+            <param name="collection">The name of the collection to search over</param>
+            <param name="conditions">A set of conditions for the search</param>
+            <param name="whenDone">The delegate to be called once the request is completed</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.SearchDocumentAggregate(System.String,System.Collections.Generic.IEnumerable{Cloudbase.DataCommands.CBDataAggregationCommand},System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Runs a search over a collection and applies the given list of aggregation commands to the output.
+            </summary>
+            <param name="collection">The name of the collection to search over</param>
+            <param name="aggregateConditions">A set of conditions for the search</param>
+            <param name="whenDone">The delegate to be called once the request is completed</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.UpdateDocument(System.String,Cloudbase.DataCommands.CBHelperSearchCondition,System.Object,System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Updates one or many documents in a cloudbase collection with the given document/list of documents.
+            Only documents that match the conditions are updated.
+            </summary>
+            <param name="collection">The name of the collection</param>
+            <param name="conditions">A set of conditions to lookup the documents to be updated</param>
+            <param name="document">The document to be updated. Documents matching the search conditions will be replaced with this value</param>
+            <param name="whenDone">The delegate to be called once the request is completed</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.UpdateDocument(System.String,Cloudbase.DataCommands.CBHelperSearchCondition,System.Object,System.Collections.Generic.IEnumerable{Cloudbase.CBHelperAttachment},System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Updates one or many documents in a cloudbase collection with the given document/list of documents.
+            Only documents that match the conditions are updated.
+            </summary>
+            <param name="collection">The name of the collection</param>
+            <param name="conditions">A set of conditions to lookup the documents to be updated</param>
+            <param name="document">The document to be updated. Documents matching the search conditions will be replaced with this value</param>
+            <param name="fileAttachments">A List of file attachments for the new documents</param>
+            <param name="whenDone">The delegate to be called once the request is completed</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.DownloadFile(System.String,System.Func{System.Byte[],System.Boolean})">
+            <summary>
+            This method retrieves a file owned by the current application from the cloudbase.io file system using the file id string
+            from a cb_files field.
+            </summary>
+            <param name="FileID">The file id taken from the cb_files value of a document in a collection</param>
+            <param name="whenDone">Once the download is finished this delegate receives the content of the file in the form of a byte[]</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.SendNotification(Cloudbase.CBNotificationType,System.String,System.String,System.String,System.String)">
+            <summary>
+            Sends a (Windows8) push notification to all client devices on a channel
+            </summary>
+            <param name="type">The type of notification to be sent.</param>
+            <param name="channel">The name of the channel to notify on</param>
+            <param name="title">The title, first line of text for the notification</param>
+            <param name="subtitle">The second line of text for the notification. This can be left blank</param>
+            <param name="imageUri">A URI for an image for the notification. This can be either ms-app:// for a local image or http:// for an 
+            image from the internet</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.SendNotification(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Sends a generic push notification for any device
+            </summary>
+            <param name="alert">Main text for the push notification</param>
+            <param name="channel">Channel to notify on</param>
+            <param name="moreParams">Dictionary of additional parameters to send to the notifications endpoint</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.SendEmail(System.String,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Send an email to the specified recipient using the given template.
+            
+            Before sending emails through the cloudbase.io APIs please verify your DNS configuration as described here
+            http://cloudbase.io/documentation/rest-apis/emails
+            </summary>
+            <param name="Template">The template code as created on cloudbase.io</param>
+            <param name="Recipient">The email address of the recipient</param>
+            <param name="Subject">The subject of the email</param>
+            <param name="vars">A set of variables to fill the template</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.ExecuteCloudFunction(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Executes a CloudFunction on demand.
+            </summary>
+            <param name="FunctionCode">The unique code identifying the function as created on cloudbase.io</param>
+            <param name="Params">Additional parameters to be passed to the function - these will be accessible to the function in the form
+            of Http POST parameters</param>
+            <param name="whenDone">This delegate will receive the output of the function once the execution is completed.</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.ExecuteApplet(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Executes an Applet on demand. http://cloudbase.io/documentation/applets/get-started
+            </summary>
+            <param name="FunctionCode">The unique code identifying the applet on cloudbase.io</param>
+            <param name="Params">Additional parameters to be passed to the applet</param>
+            <param name="whenDone">This delegate will receive the output of the applet once the execution is completed.</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.ExecuteSharedApi(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Executes a Shared API on demand. http://cloudbase.io/documentation/windows-8/cloud-functions
+            </summary>
+            <param name="ApiCode">The unique code identifying the Shared API on cloudbase.io</param>
+            <param name="Password">The password for the Shared API if necessary</param>
+            <param name="Params">Additional parameters to be passed to the Shared API</param>
+            <param name="whenDone">This delegate will receive the output of the Shared API once the execution is completed.</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.PreparePayPalPurchase(Cloudbase.CBPayPalBill,System.Boolean,System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Calls PayPal and requests a token for the express checkout of digital goods.
+            The PayPal API credentials must be set in the cloudbase.io control panel for this method to work.
+            </summary>
+            <param name="bill">A populated CBPayPalBill object with at least one detail item</param>
+            <param name="isLiveEnvironment">Whether the call should be made to the PayPal production or sandbox environments</param>
+            <param name="whenDone">A delegate to manage the results returned from the server - specifically the token and checkout url</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.IsPayPayPaymentComplete(System.Uri,System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            This method checks whether a PayPal transaction initiated with the PreparePayPalPurchase method is completed.
+            This should be called on the Navigating event of the WebBrowser object. The Uri from the Navigating Event should
+            be passed to this method.
+            The Payment status on cloudbase.io will automatically be updated. Once that is completed your whenDone method will
+            be triggered.
+            The method will return right away and you can start closing the Page and handle the outcome of the payment in the 
+            whenDone method
+            </summary>
+            <param name="browserUri">The Uri received from the Navigating event of the WebBrowser object</param>
+            <param name="whenDone">A delegate to handle the outcome of the payment</param>
+            <returns>true if the payment is complete and you can close the Browser. false if PayPal is still interacting
+            with the user and processing the payment</returns>
+        </member>
+        <member name="M:Cloudbase.CBHelper.GetPayPalPaymentDetails(System.String,System.Func{Cloudbase.CBResponseInfo,System.Boolean})">
+            <summary>
+            Retrieves the information about a PayPal purchase which has been initiated with the preparePayPalPurchase method.
+            The paymentId is returned when the payment is prepared and completed.
+            </summary>
+            <param name="paymentId">The payment id returned by cloudbase.io</param>
+            <param name="whenDone">A delegate to use the details returned by the cloudbase.io APIs</param>
+        </member>
+        <member name="M:Cloudbase.CBHelper.AsciiToString(System.Byte[])">
+            <summary>
+            Recives a byte[] and return an ASCII encoded string
+            </summary>
+            <param name="bytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cloudbase.CBHelper.StringToAscii(System.String)">
+            <summary>
+            Receives a string and returns a byte[] using ASCII encoding
+            </summary>
+            <param name="s"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Cloudbase.CBHelper.DeviceUniqueIdentifier">
+            <summary>
+            a unique identifier for the device. By default we'll try to use the DeviceUniqueId from the DeviceExtendedProperties
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBHelper.AuthUsername">
+            <summary>
+            The username of the client application. If this field is populated it will be sent with each request to the cloudbase.io APIs
+            and if the application security settings requeire it cloudbase.io will try to authenticate this user against the users collection
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBHelper.AuthPassword">
+            <summary>
+            The password for the client application.
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBHelper.IsHttps">
+            <summary>
+            Whether or not to use the https APIs. By default this is set to true and we recommend always using https
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBHelper.LogDefaultCategory">
+            <summary>
+            This string is used when no category is specified in the Log calls.
+            </summary>
+        </member>
+        <member name="P:Cloudbase.CBHelper.DebugMode">
+            <summary>
+            If this parameter is set to true then the helper class will print out verbose debugging messages while executing
+            the api calls
+            </summary>
+        </member>
+        <member name="T:Cloudbase.DataCommands.CBDataAggregationCommandUnwind">
+            Unwinds an array from a field inside a document by multiplying
+            the document in the result set. For example consider the document:
+            {
+              "firstName" : "Cloud",
+              "lastName"  : "Base",
+              "books"     : [ "100 Years of Solitude", "Love in the Time of Cholera", "Memoirs of My Melancholy Whores" ]
+            }
+            calling the Unwind command on the books field would result in three separate
+            documents being returned by the search:
+            { "firstName" : "Cloud", "lastName" : "Base", "books" : "100 Years of Solitude" }
+            { "firstName" : "Cloud", "lastName" : "Base", "books" : "Love in the Time of Cholera" }
+            ...
+        </member>
+        <member name="T:Cloudbase.DataCommands.CBDataAggregationCommandGroup">
+            The group aggregation command. This works exaclty in the same way a GROUP BY
+            command would work in SQL.
+            The outputField array contains the number of fields for the output to be
+            "grouped by".
+            There's a number of operators to apply to the grouped field defined as
+            CBDataAggregationGroupOperator
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBDataAggregationCommandGroup.AddOutputField(System.String)">
+            Adds a field to the list of fields the output should be
+            grouped by
+            @param An NSString with the name of the field
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBDataAggregationCommandGroup.AddGroupFormulaForField(System.String,Cloudbase.DataCommands.CBDataAggregationGroupOperator,System.String)">
+            Adds a calculated field to the output of this group clause using the value of another field
+            @param outputFieldName The name of the output field
+            @param operator The operator to apply to the selected variable field
+            @param fieldName The name of the variable field to be used with the operator
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBDataAggregationCommandGroup.AddGroupFormulaForValue(System.String,Cloudbase.DataCommands.CBDataAggregationGroupOperator,System.String)">
+            Adds a calculated field to the output of this group clause using a static value
+            @param outputFieldName The name of the output field
+            @param op The operator to apply to the selected variable field
+            @param value A value to be used with the operator
+        </member>
+        <member name="T:Cloudbase.DataCommands.Geocoordinate">
+            <summary>
+            Stubbed in Geocoordinate class, only holds Latitude and Longitude, used to replace the need for Windows.Devices.Geolocation, could possibly have used
+            System.Device.Location classes, but I didn't want to require another DLL for just a simple long/lat holder used in one DataCommand
+            </summary>
+        </member>
+        <member name="T:Cloudbase.DataCommands.CBConditionOperator">
+            <summary>
+            The set of possible operators for a CBHelperSearchCondition
+            </summary>
+        </member>
+        <member name="T:Cloudbase.DataCommands.CBConditionLink">
+            <summary>
+            The possible links between two CBHelperSearchCondition objects.
+            </summary>
+        </member>
+        <member name="T:Cloudbase.DataCommands.CBHelperSearchCondition">
+            <summary>
+            This object is used by the cloudbase APIs to run search over a collection. Each CBHelperSearchCondition object can
+            contain a List of subconditions (other CBHelperSearchCondition objects)
+            </summary>
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBHelperSearchCondition.#ctor(System.Collections.Generic.List{Cloudbase.DataCommands.CBHelperSearchCondition})">
+            <summary>
+            Creates a new empty CBHelperSearchCondition object containing a number of subconditions
+            </summary>
+            <param name="SubConditions">A List of CBHelperSearchCondition objects</param>
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBHelperSearchCondition.#ctor(System.String,Cloudbase.DataCommands.CBConditionOperator,System.String)">
+             <summary>
+             Shortcut to initialise a simple condition object
+            
+             The possible operators for each condition are:
+             CBOperatorEqual,
+             CBOperatorLess,
+             CBOperatorLessOrEqual,
+             CBOperatorBigger,
+             CBOperatorBiggerOrEqual,
+             CBOperatorAll,
+             CBOperatorExists,
+             CBOperatorMod,
+             CBOperatorNe,
+             CBOperatorIn,
+             CBOperatorNin,
+             CBOperatorSize,
+             CBOperatorType
+             </summary>
+             <param name="field">The name of the field to run the search over</param>
+             <param name="op">The operator</param>
+             <param name="value">The value to compare against</param>
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBHelperSearchCondition.#ctor(Cloudbase.DataCommands.Geocoordinate,System.Double)">
+            <summary>
+             Creates a new search condition to lookup for records around the given coordinates
+            </summary>
+            <param name="location">The coordinates to use for the search</param>
+            <param name="maxDistance">The radius in meters to search around the coordinates</param>
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBHelperSearchCondition.AddAnd(Cloudbase.DataCommands.CBHelperSearchCondition)">
+            <summary>
+            Adds a new sub-condition to the current condition using AND as a link.
+            </summary>
+            <param name="cond">The new sub-condition</param>
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBHelperSearchCondition.AddOr(Cloudbase.DataCommands.CBHelperSearchCondition)">
+            <summary>
+            Adds a new sub-condition to the current condition using OR as a link.
+            </summary>
+            <param name="cond">The new sub-condition</param>
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBHelperSearchCondition.AddNor(Cloudbase.DataCommands.CBHelperSearchCondition)">
+            <summary>
+            Adds a new sub-condition to the current condition using NOR as a link.
+            </summary>
+            <param name="cond">The new sub-condition</param>
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBHelperSearchCondition.AddSortField(System.String,Cloudbase.DataCommands.CBSortDirection)">
+            <summary>
+            Add a sorting condition to your search. You can add multiple fields to sort by.
+            It is only possible to sort on top level fields and not on objects.
+            </summary>
+            <param name="fieldName">The name of the field in the collection</param>
+            <param name="direction">The CBSortDirection for the sort</param>
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBHelperSearchCondition.SerializeConditions">
+            <summary>
+            Serializes the current condition and sub-conditions to a nested set of Dictionaries which can
+            then be serialised to JSON to be sent to the cloudbase.io APIs
+            </summary>
+            <returns>The Dictionary representation of the current set of conditions</returns>
+        </member>
+        <member name="M:Cloudbase.DataCommands.CBHelperSearchCondition.SerializeConditions(Cloudbase.DataCommands.CBHelperSearchCondition)">
+            <summary>
+            Serializes the given condition and sub-conditions to a nested set of Dictionaries which can
+            then be serialised to JSON to be sent to the cloudbase.io APIs
+            </summary>
+            <returns>The Dictionary representation of the current set of conditions</returns>
+        </member>
+        <member name="P:Cloudbase.DataCommands.CBHelperSearchCondition.Limit">
+            <summary>
+            This property is the maximum number of results to be returned by the search
+            </summary>
+        </member>
+        <member name="P:Cloudbase.DataCommands.CBHelperSearchCondition.Offset">
+            <summary>
+            The offset of the documents returned - used for pagination of results.
+            The server will skip the number of records indicated in this parameter before returning
+            the output
+            </summary>
+        </member>
+        <member name="P:Cloudbase.DataCommands.CBHelperSearchCondition.ConditionLink">
+            <summary>
+            The link between the previous analyzed condition and this one.
+            </summary>
+        </member>
+    </members>
+</doc>
