@@ -16,7 +16,7 @@ Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 CBHelper.NET
 =================
 
-The cloudbase.io .NET helper class
+The cloudbase.io .NET helper class (http://cloudbase.io)
 
 The Visual Studio 2010 solution contains one project
 - CBHelper.NET - the actual helper class which compiles to a dll library
